@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "oxc"],
+  "ignorePatterns": [".next", "node_modules", "dist", "build"],
+  "rules": {
+    "react/rules-of-hooks": "error"
+  }
+}
