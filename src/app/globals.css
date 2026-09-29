@@ -1,1 +1,124 @@
 @import "tailwindcss";
+
+/* =============================================================================
+   Design tokens
+   -----------------------------------------------------------------------------
+   These few values decide how the whole app looks, so everything stays
+   consistent. "paper" and "ink" are warm greys (not cold blue-greys), which is
+   what gives the page its calm, paper-like feel. There is exactly one accent
+   colour (a deep spruce green) and one red that is only used for deleting.
+   ============================================================================= */
+@theme {
+  --color-paper: #faf9f7;
+  --color-surface: #ffffff;
+  --color-hairline: #e7e3dc;
+  --color-hairline-strong: #d6d1c8;
+
+  --color-ink: #1c1a17;
+  --color-ink-soft: #56514a;
+  --color-ink-faint: #6f6960;
+
+  --color-accent-50: #eef5f3;
+  --color-accent-100: #d7e9e5;
+  --color-accent-200: #b0d3cc;
+  --color-accent-400: #5f9f92;
+  --color-accent-500: #2f7d6d;
+  --color-accent-600: #1f6b5c;
+  --color-accent-700: #175649;
+  --color-accent-800: #123f36;
+
+  --color-danger-50: #fdf1f0;
+  --color-danger-600: #a4362f;
+
+  /* One corner radius for fields, one for larger surfaces. */
+  --radius-field: 0.7rem;
+  --radius-card: 1.1rem;
+
+  /* Shadows are almost invisible on purpose. */
+  --shadow-soft: 0 1px 2px rgb(28 26 23 / 0.05), 0 1px 1px rgb(28 26 23 / 0.03);
+  --shadow-lift:
+    0 8px 20px -12px rgb(28 26 23 / 0.2), 0 2px 6px -3px rgb(28 26 23 / 0.08);
+
+  /* Inter if it happens to be installed, then the best font each system has. */
+  --font-sans:
+    "Inter", "Inter var", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+
+  /* Two short, quiet animations: one for new tasks, one for deleted ones. */
+  --animate-task-in: task-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-task-out: task-out 200ms cubic-bezier(0.4, 0, 0.6, 1) both;
+
+  @keyframes task-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Fades a deleted row out while closing the gap it leaves behind. */
+  @keyframes task-out {
+    0% {
+      max-height: 10rem;
+      overflow: hidden;
+      opacity: 1;
+    }
+    60% {
+      opacity: 0;
+    }
+    100% {
+      max-height: 0;
+      padding-block: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* =============================================================================
+   Base
+   ============================================================================= */
+@layer base {
+  html {
+    /* The app is designed in light colours, so ask the browser not to restyle
+       form controls when the visitor's computer is set to dark mode. */
+    color-scheme: light;
+    /* Stops the page nudging sideways when the scrollbar appears. */
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    /* No grey flash when tapping a row on a touch screen. */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* One clearly visible focus ring for every interactive element, so keyboard
+     users can always see where they are. Individual pieces of the interface
+     only need to switch this off when they already show focus in another way. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-600);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-100);
+    color: var(--color-accent-800);
+  }
+}
+
+/* Anyone who asks their system to reduce motion gets the app with no animation
+   and no slow transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}
